@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ .Release.Name }}-daemonset
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-daemon
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-daemon
+    spec:
+      containers:
+        - name: busybox
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          command:
+            - sh
+            - -c
+            - |
+              echo "{{ .Values.app.message }} from DaemonSet"
+              sleep 3600
+          env:
+            - name: APP_MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: MESSAGE
+            - name: API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: API_TOKEN
+          volumeMounts:
+            - name: app-config
+              mountPath: /etc/myapp/config
+            - name: app-secret
+              mountPath: /etc/myapp/secret
+              readOnly: true
+      volumes:
+        - name: app-config
+          configMap:
+            name: {{ .Release.Name }}-config
+        - name: app-secret
+          secret:
+            secretName: {{ .Release.Name }}-secret

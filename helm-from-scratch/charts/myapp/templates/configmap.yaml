@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+data:
+  MESSAGE: {{ .Values.app.message | quote }}
+  PORT: {{ .Values.app.port | quote }}

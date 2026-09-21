@@ -1,0 +1,105 @@
+=== Helm Install / Deployment Verification ===
+NAME: myapp
+LAST DEPLOYED: Mon Sep 21 09:58:35 2026
+NAMESPACE: default
+STATUS: deployed
+REVISION: 9
+DESCRIPTION: Rollback to 1
+RESOURCES:
+==> v1/Secret
+NAME           TYPE     DATA   AGE
+myapp-secret   Opaque   1      20m
+
+==> v1/ConfigMap
+NAME           DATA   AGE
+myapp-config   2      20m
+
+==> v1/Service
+NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+myapp-service   ClusterIP   10.101.105.73   <none>        80/TCP    20m
+
+==> v1/DaemonSet
+NAME              DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+myapp-daemonset   1         1         1       1            1           <none>          20m
+
+==> v1/Pod(related)
+NAME                    READY   STATUS    RESTARTS   AGE
+myapp-daemonset-vm2mp   1/1     Running   0          6m41s
+myapp-deployment-8449886bb7-mgd5l   1/1   Running   0     7m11s
+myapp-deployment-8449886bb7-szgvf   1/1   Running   0     7m10s
+
+==> v1/Deployment
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+myapp-deployment   2/2     2            2           20m
+
+==> v1/Job
+NAME        STATUS     COMPLETIONS   DURATION   AGE
+myapp-job   Complete   1/1           3s         7m11s
+
+==> v1/CronJob
+NAME            SCHEDULE      TIMEZONE   SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+myapp-cronjob   */5 * * * *   <none>     False     0        2m39s           20m
+
+
+TEST SUITE: None
+
+=== Kubernetes Resources ===
+NAME                                    READY   STATUS      RESTARTS      AGE
+pod/backend-96b95bcb9-8x8q9             1/1     Running     1 (20h ago)   21h
+pod/backend-96b95bcb9-f9kfz             1/1     Running     1 (20h ago)   21h
+pod/backend-96b95bcb9-nq2t4             1/1     Running     1 (20h ago)   21h
+pod/frontend-9d6559d7-67m4v             1/1     Running     1 (20h ago)   21h
+pod/myapp-cronjob-29832890-tf947        0/1     Completed   0             12m
+pod/myapp-cronjob-29832895-qppg5        0/1     Completed   0             7m39s
+pod/myapp-cronjob-29832900-8gcq4        0/1     Completed   0             2m39s
+pod/myapp-daemonset-vm2mp               1/1     Running     0             6m41s
+pod/myapp-deployment-8449886bb7-mgd5l   1/1     Running     0             7m11s
+pod/myapp-deployment-8449886bb7-szgvf   1/1     Running     0             7m10s
+pod/myapp-job-nh6gt                     0/1     Completed   0             7m11s
+
+NAME                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+service/backend         ClusterIP   10.98.125.189   <none>        80/TCP         21h
+service/frontend        NodePort    10.103.55.55    <none>        80:30387/TCP   21h
+service/kubernetes      ClusterIP   10.96.0.1       <none>        443/TCP        21h
+service/myapp-service   ClusterIP   10.101.105.73   <none>        80/TCP         20m
+
+NAME                             DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+daemonset.apps/myapp-daemonset   1         1         1       1            1           <none>          20m
+
+NAME                               READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/backend            3/3     3            3           21h
+deployment.apps/frontend           1/1     1            1           21h
+deployment.apps/myapp-deployment   2/2     2            2           20m
+
+NAME                                          DESIRED   CURRENT   READY   AGE
+replicaset.apps/backend-96b95bcb9             3         3         3       21h
+replicaset.apps/frontend-9d6559d7             1         1         1       21h
+replicaset.apps/myapp-deployment-7f7c9557d8   0         0         0       17m
+replicaset.apps/myapp-deployment-8449886bb7   2         2         2       20m
+
+NAME                          SCHEDULE      TIMEZONE   SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+cronjob.batch/myapp-cronjob   */5 * * * *   <none>     False     0        2m39s           20m
+
+NAME                               STATUS     COMPLETIONS   DURATION   AGE
+job.batch/myapp-cronjob-29832890   Complete   1/1           3s         12m
+job.batch/myapp-cronjob-29832895   Complete   1/1           3s         7m39s
+job.batch/myapp-cronjob-29832900   Complete   1/1           3s         2m39s
+job.batch/myapp-job                Complete   1/1           3s         7m11s
+
+=== ConfigMaps ===
+NAME               DATA   AGE
+kube-root-ca.crt   1      21h
+myapp-config       2      20m
+
+=== Secrets ===
+NAME                          TYPE                 DATA   AGE
+myapp-secret                  Opaque               1      20m
+sh.helm.release.v1.myapp.v1   helm.sh/release.v1   1      20m
+sh.helm.release.v1.myapp.v2   helm.sh/release.v1   1      17m
+sh.helm.release.v1.myapp.v3   helm.sh/release.v1   1      15m
+sh.helm.release.v1.myapp.v4   helm.sh/release.v1   1      14m
+sh.helm.release.v1.myapp.v5   helm.sh/release.v1   1      8m19s
+sh.helm.release.v1.myapp.v6   helm.sh/release.v1   1      7m11s
+sh.helm.release.v1.myapp.v7   helm.sh/release.v1   1      6m57s
+sh.helm.release.v1.myapp.v8   helm.sh/release.v1   1      5m7s
+sh.helm.release.v1.myapp.v9   helm.sh/release.v1   1      4m4s

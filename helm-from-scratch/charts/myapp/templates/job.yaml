@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-job-{{ .Values.image.tag | replace "." "-" }}
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-job
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: busybox
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          command:
+            - sh
+            - -c
+            - |
+              echo "{{ .Values.app.message }} from Job"
+              echo "Job completed successfully"
+          env:
+            - name: APP_MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: MESSAGE
+            - name: API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: API_TOKEN

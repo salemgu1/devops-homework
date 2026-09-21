@@ -1,0 +1,46 @@
+NAME                                    READY   STATUS      RESTARTS      AGE
+pod/backend-96b95bcb9-8x8q9             1/1     Running     1 (20h ago)   21h
+pod/backend-96b95bcb9-f9kfz             1/1     Running     1 (20h ago)   21h
+pod/backend-96b95bcb9-nq2t4             1/1     Running     1 (20h ago)   21h
+pod/frontend-9d6559d7-67m4v             1/1     Running     1 (20h ago)   21h
+pod/myapp-cronjob-29832885-8d6pm        0/1     Completed   0             4m3s
+pod/myapp-daemonset-nkw2d               1/1     Running     0             3m48s
+pod/myapp-deployment-7f7c9557d8-4w9vd   1/1     Running     0             4m18s
+pod/myapp-deployment-7f7c9557d8-k2p44   1/1     Running     0             4m13s
+pod/myapp-job-v2f4g                     0/1     Completed   0             7m15s
+
+NAME                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+service/backend         ClusterIP   10.98.125.189   <none>        80/TCP         21h
+service/frontend        NodePort    10.103.55.55    <none>        80:30387/TCP   21h
+service/kubernetes      ClusterIP   10.96.0.1       <none>        443/TCP        21h
+service/myapp-service   ClusterIP   10.101.105.73   <none>        80/TCP         7m15s
+
+NAME                             DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+daemonset.apps/myapp-daemonset   1         1         1       1            1           <none>          7m15s
+
+NAME                               READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/backend            3/3     3            3           21h
+deployment.apps/frontend           1/1     1            1           21h
+deployment.apps/myapp-deployment   2/2     2            2           7m15s
+
+NAME                                          DESIRED   CURRENT   READY   AGE
+replicaset.apps/backend-96b95bcb9             3         3         3       21h
+replicaset.apps/frontend-9d6559d7             1         1         1       21h
+replicaset.apps/myapp-deployment-7f7c9557d8   2         2         2       4m18s
+replicaset.apps/myapp-deployment-8449886bb7   0         0         0       7m15s
+
+NAME                          SCHEDULE      TIMEZONE   SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+cronjob.batch/myapp-cronjob   */5 * * * *   <none>     False     0        4m3s            7m15s
+
+NAME                               STATUS     COMPLETIONS   DURATION   AGE
+job.batch/myapp-cronjob-29832885   Complete   1/1           3s         4m3s
+job.batch/myapp-job                Complete   1/1           11s        7m15s
+NAME               DATA   AGE
+kube-root-ca.crt   1      21h
+myapp-config       2      7m19s
+NAME                          TYPE                 DATA   AGE
+myapp-secret                  Opaque               1      7m24s
+sh.helm.release.v1.myapp.v1   helm.sh/release.v1   1      7m24s
+sh.helm.release.v1.myapp.v2   helm.sh/release.v1   1      4m27s
+sh.helm.release.v1.myapp.v3   helm.sh/release.v1   1      119s
+sh.helm.release.v1.myapp.v4   helm.sh/release.v1   1      92s

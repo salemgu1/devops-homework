@@ -1,0 +1,23 @@
+image:
+  repository: busybox
+  tag: "1.37"
+
+app:
+  message: "Hello from Helm"
+  port: 8080
+
+secret:
+  apiToken: "demo-secret-token"
+
+deployment:
+  replicas: 2
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+cronjob:
+  schedule: "*/5 * * * *"
+
+resources: {}
